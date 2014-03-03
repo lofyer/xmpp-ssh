@@ -10,13 +10,13 @@
 # Philippe Creux. pcreux/AT/gmail/DOT/com
  
 # Jabber-SH connects to Jabber using the BOT_LOGIN and BOT_PASSWORD details.
-BOT_LOGIN         = "sshd@lofyer.org"
-BOT_PASSWORD      = "sshdpass"
+BOT_LOGIN         = "admin@lofyer.org"
+BOT_PASSWORD      = "adminpassword"
  
 # Jabber-SH answers some random epigram via 'fortune' to any message sent to him.
 # The user CLIENT_LOGIN logs into the console by sending the CLIENT_PASSPHRASE.
 CLIENT_LOGIN      = "lofyer@lofyer.org"
-CLIENT_PASSPHRASE = "password"
+CLIENT_PASSPHRASE = "secreteword"
  
 require 'rubygems'
 require 'xmpp4r-simple'
@@ -34,6 +34,7 @@ end
 while true
   messenger.received_messages do |msg|  
     puts "Received #{msg.body} from #{msg.from}"
+    begin
     if msg && msg.from.to_s.include?(CLIENT_LOGIN)
       if msg.body == CLIENT_PASSPHRASE
         if @sh == nil
@@ -54,6 +55,9 @@ while true
           messenger.deliver(msg.from, 'I am online.')
         end
       end
+    end
+    rescue
+      messenger.deliver(msg.from, 'I got an error. Now please re-enter your password twice to logout-login.')
     end
   end  
   sleep 1  
