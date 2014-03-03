@@ -1,0 +1,3 @@
+apt-get install rubygems
+gem install sessions
+gem install xmpp4r-simple
