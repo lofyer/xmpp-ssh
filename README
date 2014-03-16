@@ -5,3 +5,6 @@ gem install xmpp4r-simple
 
 Perl:
 apt-get install libnet-xmpp-perl
+
+Python:
+apt-get install python-xmpp
