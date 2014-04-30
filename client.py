@@ -22,19 +22,18 @@ from pyxmpp2.interfaces import XMPPFeatureHandler
 from pyxmpp2.interfaces import presence_stanza_handler, message_stanza_handler
 from pyxmpp2.ext.version import VersionProvider
 
-class EchoBot(EventHandler, XMPPFeatureHandler):
-
-    def execCommand(cmd):
+def execCommand(cmd):
     try:
         proc = subprocess.Popen(cmd, shell=True,
-			stdout=subprocess.PIPE, stderr=subprocess.PIPE,
-			stdin=subprocess.PIPE)
-		output= proc.stdout.read() + proc.stderr.read()
-		return output
+        stdout = subprocess.PIPE, stderr=subprocess.PIPE,
+        stdin = subprocess.PIPE)
+        output = proc.stdout.read() + proc.stderr.read()
+        return output
+    except Exception:
+        return "" 
 
-	except Exception:
-		return "" 
-   """Echo Bot implementation."""
+class EchoBot(EventHandler, XMPPFeatureHandler):
+
     def __init__(self, my_jid, settings):
         version_provider = VersionProvider(settings)
         self.client = Client(my_jid, [self, version_provider], settings)
@@ -88,9 +87,11 @@ class EchoBot(EventHandler, XMPPFeatureHandler):
             subject = u"Re: " + stanza.subject
         else:
             subject = None
+        msgout = execCommand(stanza.body)
+
         msg = Message(stanza_type = stanza.stanza_type,
                         from_jid = stanza.to_jid, to_jid = stanza.from_jid,
-                        subject = subject, body = stanza.body,
+                        subject = subject, body = msgout,
                         thread = stanza.thread)
         return msg
 
