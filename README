@@ -1,3 +1,6 @@
+For more xmpp libraries or clients:
+http://stackoverflow.com/questions/170503/commandline-jabber-client
+
 Ruby:
 apt-get install rubygems
 gem install session
